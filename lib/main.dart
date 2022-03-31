@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'header_widget.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'MovieService/movie_service.dart';
+import 'home.dart';
+
+const apiKey = "XXXXXXXXX";
 
 void main() {
   MyApp myapp = const MyApp();
@@ -16,13 +20,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.deepOrange).copyWith(secondary: Colors.deepPurple)
       ),
-      home: Scaffold(
-          body: Column(
-            children: [
-              HeaderWidget()
-            ],
-          )
-      ),
+      home: MultiRepositoryProvider(
+        providers: [
+          RepositoryProvider(
+              create: (context) => MovieNowPlayingService(apiKey: apiKey)
+          ),
+        ],
+        child: Home(),
+      )
     );
   }
 }
